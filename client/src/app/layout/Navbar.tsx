@@ -4,7 +4,12 @@ import Toolbar from '@mui/material/Toolbar';
 import { Button, Container, Typography } from '@mui/material';
 import { Group } from '@mui/icons-material';
 
-export default function Navbar() {
+
+type Props = {
+  openForm: () => void
+}
+
+export default function Navbar({openForm}: Props) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{
@@ -39,7 +44,8 @@ export default function Navbar() {
             </Box>
 
             {/* Right Side: Action Button */}
-            <Button size="large" variant="contained" color='warning' sx={{ fontWeight: 'bold' }}>
+            <Button size="large" variant="contained" color='warning' sx={{ fontWeight: 'bold' }}
+            onClick={openForm}>
               Create Activity
             </Button>
 

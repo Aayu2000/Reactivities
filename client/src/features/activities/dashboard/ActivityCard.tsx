@@ -1,11 +1,13 @@
-import { Box, Button, Card, CardActions, CardContent, Chip, Divider, Paper, Typography } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, Chip, Divider, Paper, Stack, Typography } from "@mui/material"
 
 type Props = {
     activity: Activity
+    selectActivity: (id: string) => void
+    deleteActivity: (id: string) => void
 }
 
 
-export default function ActivityCard({ activity }: Props) {
+export default function ActivityCard({ activity, selectActivity, deleteActivity }: Props) {
     return (
         // <Card sx={{ borderRadius: 3 }}>
         //     <CardContent>
@@ -72,8 +74,9 @@ export default function ActivityCard({ activity }: Props) {
                     size="small"
                     sx={{ borderRadius: 1.5, px: 0.5 }}
                 />
-
+                <Stack direction="row" spacing={2}>
                 <Button
+                onClick={()=>selectActivity(activity.id)}
                     variant="contained"
                     size="medium"
                     sx={{
@@ -84,6 +87,20 @@ export default function ActivityCard({ activity }: Props) {
                 >
                     View
                 </Button>
+                <Button
+                onClick={()=>deleteActivity(activity.id)}
+                    variant="contained"
+                    color="error"
+                    size="medium"
+                    sx={{
+                        textTransform: 'uppercase',
+                        fontWeight: 'bold',
+                        minWidth: 80
+                    }}
+                >
+                    Delete
+                </Button>
+                </Stack>
             </Box>
         </Paper>
 
