@@ -13,7 +13,7 @@ type Props = {
     editMode: boolean;
     //commented after using react query
     //submitForm: (activity: Activity) => void;
-    deleteActivity: (id: string) => void;
+    //deleteActivity: (id: string) => void;
 }
 
 export default function ActivityDashboard({ activities, cancelSelectActivity,
@@ -24,14 +24,16 @@ export default function ActivityDashboard({ activities, cancelSelectActivity,
     editMode,
     //commented after using react query
     //submitForm,
-    deleteActivity }: Props) {
+    //deleteActivity 
+}: Props) {
     return (
         <Grid container spacing={3}>
             <Grid size={7}>
                 <ActivityList
                     activities={activities}
                     selectActivity={selectActivity}
-                    deleteActivity={deleteActivity}
+                    //commented after using react query
+                    //deleteActivity={deleteActivity}
                 />
             </Grid>
             <Grid size={5}>

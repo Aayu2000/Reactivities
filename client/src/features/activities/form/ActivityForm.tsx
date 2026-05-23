@@ -16,7 +16,7 @@ export default function ActivityForm({ activity, closeForm }: Props) {
     //submitForm 
 
 
-    const {updateActivity} = useActivities();
+    const { updateActivity, createActivity } = useActivities();
 
     const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -26,11 +26,14 @@ export default function ActivityForm({ activity, closeForm }: Props) {
         formData.forEach((value, key) => {
             data[key] = value;
         });
-        if (activity){
+        if (activity) {
             data.id = activity.id
             await updateActivity.mutateAsync(data as unknown as Activity);
             closeForm();
-        } 
+        } else {
+            await createActivity.mutateAsync(data as unknown as Activity);
+            closeForm();
+        }
 
         //commented after using react query
         //submitForm(data as unknown as Activity);
@@ -45,16 +48,16 @@ export default function ActivityForm({ activity, closeForm }: Props) {
                 <TextField name="title" label="Title" variant="outlined" defaultValue={activity?.title} />
                 <TextField name="description" label="Description" variant="outlined" multiline rows={3} defaultValue={activity?.description} />
                 <TextField name="category" label="Category" variant="outlined" defaultValue={activity?.category} />
-                <TextField name="date" label="Date" type="date" variant="outlined" 
-                slotProps={{
-                    inputLabel: {
-                        shrink: true,
-                    },
-                }} 
-                defaultValue={activity?.date ? new Date(activity.date).toISOString().split('T')[0] 
-                    : new Date().toISOString().split('T')[0]
+                <TextField name="date" label="Date" type="date" variant="outlined"
+                    slotProps={{
+                        inputLabel: {
+                            shrink: true,
+                        },
+                    }}
+                    defaultValue={activity?.date ? new Date(activity.date).toISOString().split('T')[0]
+                        : new Date().toISOString().split('T')[0]
 
-                }
+                    }
                 />
                 <TextField name="city" label="City" variant="outlined" defaultValue={activity?.city} />
                 <TextField name="venue" label="Venue" variant="outlined" defaultValue={activity?.venue} />
@@ -63,11 +66,11 @@ export default function ActivityForm({ activity, closeForm }: Props) {
                         Cancel
                     </Button>
                     <Button
-                     type="submit" 
-                     variant="contained" color="success"
-                     disabled={updateActivity.isPending}>
+                        type="submit"
+                        variant="contained" color="success"
+                        disabled={updateActivity.isPending || createActivity.isPending}>
                         Submit</Button>
-                    
+
                 </Box>
             </Box>
         </Paper>

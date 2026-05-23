@@ -52,10 +52,10 @@ function App() {
   //   setEditMode(false);
   // }
 
-
-  const handleDeleteActivity = (id: string) => {
-    console.log(id);
-  }
+  //commented after using react query
+  // const handleDeleteActivity = (id: string) => {
+  //   console.log(id);
+  // }
 
 
   return (
@@ -77,7 +77,7 @@ function App() {
               closeForm={handleFormClose}
               //commented after using react query
               //submitForm={handleSubmitForm}
-              deleteActivity={handleDeleteActivity}
+              //deleteActivity={handleDeleteActivity}
             />
           )}
 
