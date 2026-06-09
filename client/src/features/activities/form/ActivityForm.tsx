@@ -1,22 +1,14 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import type { SyntheticEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivites";
+import { useNavigate, useParams } from "react-router";
 
 
-type Props = {
-    activity?: Activity
-    closeForm: () => void
-    //commented after using react query
-    //submitForm: (activity: Activity) => void;
-}
 
-
-export default function ActivityForm({ activity, closeForm }: Props) {
-    //commented after using react query
-    //submitForm 
-
-
-    const { updateActivity, createActivity } = useActivities();
+export default function ActivityForm() {
+    const {id} = useParams();
+    const { updateActivity, createActivity, activity, isLoadingActivity } = useActivities(id);
+    const navigate = useNavigate(); 
 
     const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -29,20 +21,24 @@ export default function ActivityForm({ activity, closeForm }: Props) {
         if (activity) {
             data.id = activity.id
             await updateActivity.mutateAsync(data as unknown as Activity);
-            closeForm();
+            navigate(`/activities/${activity.id}`);
+            
         } else {
-            await createActivity.mutateAsync(data as unknown as Activity);
-            closeForm();
+            createActivity.mutate(data as unknown as Activity, {
+               onSuccess: (id) => {
+                   navigate(`/activities/${id}`);
+               }
+            });
+            
         }
-
-        //commented after using react query
-        //submitForm(data as unknown as Activity);
     }
+
+    if (isLoadingActivity) return <Typography variant="h5">Loading Activity...</Typography>
 
     return (
         <Paper sx={{ borderRadius: 3, p: 3 }}>
             <Typography variant="h5" gutterBottom color="primary">
-                Create Activity
+                {activity ? 'Edit Activity' : 'Create Activity'}
             </Typography>
             <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }} onSubmit={handleSubmit}>
                 <TextField name="title" label="Title" variant="outlined" defaultValue={activity?.title} />
@@ -62,7 +58,7 @@ export default function ActivityForm({ activity, closeForm }: Props) {
                 <TextField name="city" label="City" variant="outlined" defaultValue={activity?.city} />
                 <TextField name="venue" label="Venue" variant="outlined" defaultValue={activity?.venue} />
                 <Box sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
-                    <Button onClick={closeForm} variant="contained" color="inherit">
+                    <Button  variant="contained" color="inherit">
                         Cancel
                     </Button>
                     <Button

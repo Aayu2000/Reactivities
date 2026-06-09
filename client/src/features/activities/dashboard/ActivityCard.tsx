@@ -1,36 +1,19 @@
-import { Box, Button, Card, CardActions, CardContent, Chip, Divider, Paper, Stack, Typography } from "@mui/material"
+import { Box, Button, Chip, Divider, Paper, Stack, Typography } from "@mui/material"
 import { useActivities } from "../../../lib/hooks/useActivites";
+import { Link } from "react-router";
 
 type Props = {
     activity: Activity
-    selectActivity: (id: string) => void
+    
     //commented after using react query
     //deleteActivity: (id: string) => void
 }
 
 
-export default function ActivityCard({ activity, selectActivity,
-    //commented after using react query 
-    //deleteActivity 
-}: Props) {
+export default function ActivityCard({ activity}: Props) {
 
     const {deleteActivity} = useActivities();
     return (
-        // <Card sx={{ borderRadius: 3 }}>
-        //     <CardContent>
-        //         <Typography variant="h5">{activity.title}</Typography>
-        //         <Typography sx={{ color: 'text.secondary', mb: 1 }}>{activity.date}</Typography>
-        //         <Typography variant="body2">{activity.description}</Typography>
-        //         <Typography variant="subtitle1">{activity.city} / {activity.venue}</Typography>
-        //     </CardContent>
-        //     <CardActions sx={{ display: 'flex', justifyContent: 'space-between', pb: 2 }}>
-        //         <Chip label={activity.category} variant="outlined" />
-        //         <Button size="medium" variant="contained">View</Button>
-
-        //     </CardActions>
-        // </Card>
-        //         
-
         <Paper
             elevation={1}
             sx={{
@@ -83,7 +66,8 @@ export default function ActivityCard({ activity, selectActivity,
                 />
                 <Stack direction="row" spacing={2}>
                 <Button
-                onClick={()=>selectActivity(activity.id)}
+                    component={Link}
+                    to={`/activities/${activity.id}`}
                     variant="contained"
                     size="medium"
                     sx={{
