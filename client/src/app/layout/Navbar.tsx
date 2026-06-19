@@ -84,6 +84,21 @@ export default function Navbar() {
                 >
                   Counter
                 </Button>
+                <Button 
+                  component={NavLink} 
+                  to="/errors" 
+                  sx={{ 
+                    fontSize: '1.1rem', 
+                    textTransform: 'uppercase', 
+                    fontWeight: 'bold', 
+                    color: 'white',
+                    '&.active': {
+                      color: 'yellow',
+                    }
+                  }}
+                >
+                  Errors
+                </Button>
               </Box>
             </Box>
 

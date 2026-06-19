@@ -1,5 +1,8 @@
-using System;
+using Application.Activities.DTOs;
+using Application.Core;
+using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -7,20 +10,29 @@ namespace Application.Activities.Commands;
 
 public class CreateActivity
 {
-    public class Command : IRequest<Guid>
+    public class Command : IRequest<Result<Guid>>
     {
-        public required Activity Activity { get; set; }
+        public required CreateActivityDto ActivityDto { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command, Guid>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<Guid>>
     {
-        public async Task<Guid> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            await context.Activities.AddAsync(request.Activity);
+           
 
-            await context.SaveChangesAsync(cancellationToken);
+            var activity = mapper.Map<Activity>(request.ActivityDto);
 
-            return request.Activity.Id;
+            await context.Activities.AddAsync(activity);
+
+          var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if(!result)
+            {
+                return Result<Guid>.Failure("Failed to create activity", 400);
+            }
+
+            return Result<Guid>.Success(activity.Id);
         }
     }
 }
