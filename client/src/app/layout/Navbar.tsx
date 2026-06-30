@@ -103,7 +103,9 @@ export default function Navbar() {
             </Box>
 
             {/* Right Side: Action Button */}
-            <Button size="large" variant="contained" color='warning' sx={{ fontWeight: 'bold' }}>
+            <Button size="large" variant="contained" 
+            sx={{ fontWeight: 'bold', 
+            color: 'inherit' }}>
               User Menu
             </Button>
 
