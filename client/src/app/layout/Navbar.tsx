@@ -6,10 +6,12 @@ import { Group } from '@mui/icons-material';
 import { NavLink } from 'react-router';
 import { useStore } from '../../lib/hooks/useStore';
 import { Observer } from 'mobx-react-lite';
+import { useAccount } from '../../lib/hooks/useAccount';
+import UserMenu from './UserMenu';
 
 export default function Navbar() {
-  const {uiStore} = useStore();
-
+  const { uiStore } = useStore();
+  const { currentUser } = useAccount();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{
@@ -25,9 +27,9 @@ export default function Navbar() {
               {/* Logo Section */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Group fontSize="large" />
-                <Button 
-                  component={NavLink} 
-                  to="/" 
+                <Button
+                  component={NavLink}
+                  to="/"
                   sx={{ fontSize: '1rem', textTransform: 'uppercase', fontWeight: 'bold', color: 'inherit' }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: 'bold', fontFamily: 'inherit' }}>
@@ -38,13 +40,13 @@ export default function Navbar() {
 
               {/* Nav Links Section */}
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                <Button 
-                  component={NavLink} 
-                  to="/activities" 
-                  sx={{ 
-                    fontSize: '1.1rem', 
-                    textTransform: 'uppercase', 
-                    fontWeight: 'bold', 
+                <Button
+                  component={NavLink}
+                  to="/activities"
+                  sx={{
+                    fontSize: '1.1rem',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold',
                     color: 'white',
                     '&.active': {
                       color: 'yellow',
@@ -53,29 +55,13 @@ export default function Navbar() {
                 >
                   Activities
                 </Button>
-                
-                <Button 
-                  component={NavLink} 
-                  to="/createActivity" 
-                  sx={{ 
-                    fontSize: '1.1rem', 
-                    textTransform: 'uppercase', 
-                    fontWeight: 'bold', 
-                    color: 'white',
-                    '&.active': {
-                      color: 'yellow',
-                    }
-                  }}
-                >
-                  Create Activity
-                </Button>
-                <Button 
-                  component={NavLink} 
-                  to="/counter" 
-                  sx={{ 
-                    fontSize: '1.1rem', 
-                    textTransform: 'uppercase', 
-                    fontWeight: 'bold', 
+                <Button
+                  component={NavLink}
+                  to="/counter"
+                  sx={{
+                    fontSize: '1.1rem',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold',
                     color: 'white',
                     '&.active': {
                       color: 'yellow',
@@ -84,13 +70,13 @@ export default function Navbar() {
                 >
                   Counter
                 </Button>
-                <Button 
-                  component={NavLink} 
-                  to="/errors" 
-                  sx={{ 
-                    fontSize: '1.1rem', 
-                    textTransform: 'uppercase', 
-                    fontWeight: 'bold', 
+                <Button
+                  component={NavLink}
+                  to="/errors"
+                  sx={{
+                    fontSize: '1.1rem',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold',
                     color: 'white',
                     '&.active': {
                       color: 'yellow',
@@ -101,21 +87,45 @@ export default function Navbar() {
                 </Button>
               </Box>
             </Box>
-
-            {/* Right Side: Action Button */}
-            <Button size="large" variant="contained" 
-            sx={{ fontWeight: 'bold', 
-            color: 'inherit' }}>
-              User Menu
-            </Button>
-
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {currentUser ? (
+                <UserMenu />
+              ) : (
+                <>
+                  <Button component={NavLink} to='/login'
+                    sx={{
+                      fontSize: '1.1rem',
+                      textTransform: 'uppercase',
+                      fontWeight: 'bold',
+                      color: 'white',
+                      '&.active': {
+                        color: 'yellow',
+                      }
+                    }}
+                  >
+                    Login</Button>
+                  <Button component={NavLink} to='/register'
+                    sx={{
+                      fontSize: '1.1rem',
+                      textTransform: 'uppercase',
+                      fontWeight: 'bold',
+                      color: 'white',
+                      '&.active': {
+                        color: 'yellow',
+                      }
+                    }}
+                  >
+                    Register</Button>
+                </>
+              )}
+            </Box>
           </Toolbar>
         </Container>
-        
+
         <Observer>
           {() => uiStore.isLoading ? (
-            <LinearProgress color="secondary" sx={{ position: 'absolute',bottom:0, left: 0, right: 0,height: 4 }} />
-          ): null}
+            <LinearProgress color="secondary" sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4 }} />
+          ) : null}
         </Observer>
       </AppBar>
     </Box>

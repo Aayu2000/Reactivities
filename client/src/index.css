@@ -1,0 +1,11 @@
+/* src/index.css */
+
+/* Hides Microsoft Edge's built-in password reveal button */
+input::-ms-reveal {
+    display: none;
+}
+
+/* Hides modern Webkit/Chrome native clear/reveal mechanics if applicable */
+input::-webkit-credentials-type-change-button {
+    display: none;
+}

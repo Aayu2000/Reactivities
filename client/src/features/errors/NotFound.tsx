@@ -1,9 +1,9 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 
 export default function NotFound() {
-    
+    const location = useLocation();
     return (
         <Container maxWidth="md">
             <Box
@@ -66,7 +66,7 @@ export default function NotFound() {
                     {/* Go Back Button */}
                     <Button
                         component={NavLink}
-                        to="/activities"
+                        to= '/activities'
                         variant="outlined"
                         color="primary"
                         size="large"
