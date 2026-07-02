@@ -41,6 +41,18 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// 2. ADD THIS: Configure the authentication cookie timeout properties
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Sets how long the authentication cookie remains valid (1 hour)
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    
+    // Optional but Highly Recommended:
+    // True: If the user stays active past 30 mins, it auto-renews for another hour (Sliding)
+    // False: Strict 1-hour expiration from the exact second they logged in (Absolute)
+    options.SlidingExpiration = true; 
+});
+
 // 1. Define the named CORS Policy safely
 builder.Services.AddCors(options =>
 {
