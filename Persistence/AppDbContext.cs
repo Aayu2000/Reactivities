@@ -13,6 +13,9 @@ public class AppDbContext : IdentityDbContext<User>
         
     }
     public required DbSet<Activity> Activities { get; set; }
+    public required DbSet<ActivityAttendee> ActivityAttendees { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -27,6 +30,18 @@ public class AppDbContext : IdentityDbContext<User>
             .Property(x => x.Date)
             .HasDefaultValueSql("GETUTCDATE()")
             .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<ActivityAttendee>(x => x.HasKey(a => new {a.ActivityId, a.UserId}));
+
+            modelBuilder.Entity<ActivityAttendee>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.Activities)
+            .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<ActivityAttendee>()
+            .HasOne(x => x.Activity)
+            .WithMany(x => x.Attendees)
+            .HasForeignKey(x => x.ActivityId);   
 
         }
 
