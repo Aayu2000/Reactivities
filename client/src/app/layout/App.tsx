@@ -1,6 +1,6 @@
 import { Box, Container, CssBaseline } from "@mui/material";
 import Navbar from "./Navbar";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, ScrollRestoration, useLocation } from "react-router";
 import HomePage from "../../features/home/HomePage";
 
 
@@ -12,6 +12,7 @@ function App() {
     <>
       <Box sx={{ bgcolor: '#eeeeee', minHeight: '100vh', pb: 5 }}>
         {/* used to remove default styling of Navbar  */}
+        <ScrollRestoration />
         <CssBaseline />
         {location.pathname === '/' ? <HomePage /> : (
           <>
