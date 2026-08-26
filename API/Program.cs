@@ -5,6 +5,7 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,7 @@ builder.Services.AddMediatR(x =>
 
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
@@ -59,11 +61,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     // Sets how long the authentication cookie remains valid (1 hour)
     options.ExpireTimeSpan = TimeSpan.FromHours(1);
-    
+
     // Optional but Highly Recommended:
     // True: If the user stays active past 30 mins, it auto-renews for another hour (Sliding)
     // False: Strict 1-hour expiration from the exact second they logged in (Absolute)
-    options.SlidingExpiration = true; 
+    options.SlidingExpiration = true;
 });
 
 // 1. Define the named CORS Policy safely
@@ -78,6 +80,9 @@ builder.Services.AddCors(options =>
               .SetPreflightMaxAge(TimeSpan.FromMinutes(10)); // 🌟 Forces the browser to cache the preflight check
     });
 });
+
+builder.Services.Configure<CloudinarySettings>(builder.Configuration
+.GetSection("CloudinarySettings"));
 
 var app = builder.Build();
 
@@ -103,7 +108,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 // 2. FIX: Reference the exact defined policy name cleanly. 
 // Do not pass an inline conflicting lambda here.
-app.UseCors("CorsPolicy"); 
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
