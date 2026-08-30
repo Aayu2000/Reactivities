@@ -81,8 +81,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.Configure<CloudinarySettings>(builder.Configuration
-.GetSection("CloudinarySettings"));
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 var app = builder.Build();
 
